@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/search/new">Search</a>
+        </nav>
+    </header>
+    <section>
+        <% books.forEach(b =>{   %>
+            <img src='<%= b.imgURL %>' alt="<%= b.title %>">
+            <h1><%= b.title %> </h1>
+            <h2><%= b.author %></h2>
+            <p><%= b.description %></p>
+            <% }); %>
+    </section>
+</body>
+</html>
