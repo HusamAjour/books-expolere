@@ -30,10 +30,10 @@ app.post('/searches', (req, res)=>{
         return newBook;
       });
       res.render('pages/results-page', {books: booksArray});
-    });
-    /*.catch(() =>{
+    })
+    .catch(() =>{
       errorHandler('pages/error', req, res);
-    });*/
+    });
 });
 
 app.get('*', (req,res) =>{
