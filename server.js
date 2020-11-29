@@ -21,7 +21,7 @@ app.post('/searches', (req, res)=>{
   let search_query = req.body.search_query;
   let search_selection = req.body.search_selection;
   console.log(search_selection);
-  let url = `https://www.googleapis.com/books/v1/volumes?=+${search_selection}:${search_query}`;
+  let url = `https://www.googleapis.com/books/v1/volumes?q=+${search_selection}:${search_query}`;
 
   superagent.get(url)
     .then(result =>{
@@ -32,7 +32,7 @@ app.post('/searches', (req, res)=>{
       res.render('pages/results-page', {books: booksArray});
     })
     .catch(() =>{
-      errorHandler('pages/error', req, res);
+      errorHandler('pages/error ', req, res);
     });
 });
 
