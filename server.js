@@ -7,7 +7,7 @@ const PORT = process.env.PORT;
 const superagent = require('superagent');
 
 app.set('view engine', 'ejs');
-app.use(express.static('/public'));
+app.use(express.static('./public'));
 app.use(express.urlencoded({extended: true}));
 
 app.get('/', (req,res) =>{
@@ -30,10 +30,10 @@ app.post('/searches', (req, res)=>{
         return newBook;
       });
       res.render('pages/results-page', {books: booksArray});
-    })
-    .catch(() =>{
-      errorHandler('pages/error ', req, res);
     });
+    /*.catch(() =>{
+      errorHandler('pages/error', req, res);
+    });*/
 });
 
 app.get('*', (req,res) =>{
@@ -48,11 +48,17 @@ function errorHandler(error, req, res) {
 
 function Book(data){
   this.title = data.volumeInfo.title;
-  this.author = data.volumeInfo.authors[0] || `Not available`;
+  this.author = checkArr(data.volumeInfo.authors) || `Not available`;
   this.description = data.volumeInfo.description || 'No available';
   this.imgURL = data.volumeInfo.imageLinks.thumbnail || `https://i.imgur.com/J5LVHEL.jpg`;
 }
-
+function checkArr(arr){
+  if(!Array.isArray(arr)){
+    return arr || `Not available`;
+  } else{
+    return arr[0];
+  }
+}
 app.listen(PORT, ()=>{
   console.log(`listening on port ${PORT}`);
 });
