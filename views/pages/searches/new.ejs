@@ -1,0 +1,23 @@
+<%- include('../../layout/head') %>
+<%- include('../../layout/header') %>
+<main>
+    <section>
+        <form action="/searches" method="post">
+            <div class="input-search input-group">
+                <input type="text" name="search_query" id="" placeholder="Enter a tilte or author" required>
+            </div>
+            <div>
+                <div class="radio-search input-group">
+                    <label for="title">Title <input type="radio" name="search_selection" value="intitle" id="title"
+                            checked></label>
+                </div>
+                <div class="radio-search input-group">
+                    <label for="author">Author<input type="radio" name="search_selection" value="inauthor"
+                            id="author"></label>
+                </div>
+            </div>
+            <div class="submit-btn"><button type="submit" class="btn">Search the Google Book API</button></div>
+        </form>
+    </section>
+</main>
+<%- include('../../layout/footer') %>

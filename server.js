@@ -15,7 +15,7 @@ app.get('/', (req,res) =>{
 });
 
 app.get('/search/new', (req,res) =>{
-  res.render('pages/searches/show');
+  res.render('pages/searches/new');
 });
 app.post('/searches', (req, res)=>{
   let search_query = req.body.search_query;
@@ -29,7 +29,7 @@ app.post('/searches', (req, res)=>{
         let newBook = new Book(b);
         return newBook;
       });
-      res.render('pages/results-page', {books: booksArray});
+      res.render('pages/searches/show', {books: booksArray});
     })
     .catch(() =>{
       errorHandler('pages/error', req, res);
@@ -47,17 +47,10 @@ function errorHandler(error, req, res) {
 
 
 function Book(data){
-  this.title = data.volumeInfo.title;
-  this.author = checkArr(data.volumeInfo.authors) || `Not available`;
-  this.description = data.volumeInfo.description || 'No available';
-  this.imgURL = data.volumeInfo.imageLinks.thumbnail || `https://i.imgur.com/J5LVHEL.jpg`;
-}
-function checkArr(arr){
-  if(!Array.isArray(arr)){
-    return arr || `Not available`;
-  } else{
-    return arr[0];
-  }
+  this.title = (data.volumeInfo.title)? data.volumeInfo.title : `Not available`;
+  this.author = (data.volumeInfo.authors)? data.volumeInfo.authors[0] : `Not available`;
+  this.description = (data.volumeInfo.description)? data.volumeInfo.authors[0] : `Not available`;
+  this.imgURL = (data.volumeInfo.imageLinks.thumbnail)? data.volumeInfo.imageLinks.thumbnail : `https://i.imgur.com/J5LVHEL.jpg`;
 }
 app.listen(PORT, ()=>{
   console.log(`listening on port ${PORT}`);

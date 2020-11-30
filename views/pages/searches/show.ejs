@@ -1,58 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search by Title or Author</title>
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/base.css">
-</head>
-
-<body>
-    <header>
-        <nav>
-            <div>
-                <h1>Best Books!</h1>
-            </div>
-            <div>
-                <button id="hamburgerIcon"><i class="fa fa-bars" aria-hidden="true"></i></button>
-            </div>
-        </nav>
-        <div class="links-block" id="linksBlock">
-            <ul class="links-block-visible">
-                <a href="/">Home</a>
-                <a href="/search/new">Search</a>
-            </ul>
+<%- include('../../layout/head') %>
+<%- include('../../layout/header') %>
+<main>
+    <section class="books-cards">
+        <% books.forEach(b =>{   %>
+        <div class="book-card">
+            <img src='<%= b.imgURL %>' alt="<%= b.title %>">
+            <h1><%= b.title %> </h1>
+            <h2><%= b.author %></h2>
+            <p><%= b.description %></p>
         </div>
-        <section class="title-section">
-            <h1>Search by Title or Author</h1>
-        </section>
-    </header>
-    <main>
-        <section>
-            <form action="/searches" method="post">
-                <div class="input-search input-group">
-                    <input type="text" name="search_query" id="" placeholder="Enter a tilte or author" required>
-                </div>
-                <div>
-                    <div class="radio-search input-group">
-                        <label for="title">Title <input type="radio" name="search_selection" value="intitle" id="title"
-                                checked></label>
-                    </div>
-                    <div class="radio-search input-group">
-                        <label for="author">Author<input type="radio" name="search_selection" value="inauthor"
-                                id="author"></label>
-                    </div>
-                </div>
-                <div class="submit-btn"><button type="submit" class="btn">Search the Google Book API</button></div>
-            </form>
-        </section>
-    </main>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="../js/script.js"></script>
-</body>
+        <% }); %>
+    </section>
+</main>
+<%- include('../../layout/footer') %>
 
 </html>
