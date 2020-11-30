@@ -2,12 +2,17 @@
 <%- include('../../layout/header') %>
 <main>
     <section class="books-cards">
-        <% books.forEach(b =>{   %>
+        <% books.forEach((b, i) =>{   %>
         <div class="book-card">
-            <img src='<%= b.imgURL %>' alt="<%= b.title %>">
+            <img src='<%= b.image_url %>' alt="<%= b.title %>">
             <h1><%= b.title %> </h1>
             <h2><%= b.author %></h2>
             <p><%= b.description %></p>
+            <form action="/books" method="post">
+                <div class="submit-btn">
+                    <button class="btn" type="submit" name='array_index' value= "<%= i %>" >Select this Book</button>
+                </div>
+            </form>
         </div>
         <% }); %>
     </section>
