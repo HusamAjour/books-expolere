@@ -20,3 +20,6 @@ p, a, label, input::placeholder, button{
 a{
     text-decoration: none;
 }
+button, a{
+    outline: none;
+}

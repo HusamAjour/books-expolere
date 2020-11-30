@@ -7,7 +7,8 @@
             <img src='<%= b.image_url %>' alt="<%= b.title %>">
             <h1><%= b.title %> </h1>
             <h2><%= b.author %></h2>
-            <p><%= b.description %></p>
+            <% let x = b.description.split(' ').slice(0,30); %>
+            <p><%= x.join(' '); %>...</p>
             <form action="/books" method="post">
                 <div class="submit-btn">
                     <button class="btn" type="submit" name='array_index' value= "<%= i %>" >Select this Book</button>
