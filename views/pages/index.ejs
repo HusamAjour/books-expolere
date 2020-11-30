@@ -2,12 +2,29 @@
 <%- include('../layout/header') %>
 <main>
     <section>
+
+        <% if(books.length === 0){ %>
         <div class="homepage-greetings">
             <h2>Welcome to Books Explorer App!</h2>
         </div>
         <div class="submit-btn">
             <a href="/search/new" class="btn">Get started</a>
         </div>
+        <% } else if(books.length !== 0){ %>
+            <div class="words-count">
+                <h2>Number of Books (<%=  books.length %>)</h2>
+            </div>
+        <section class="books-cards">
+            <% books.forEach(b =>{   %>
+            <div class="book-card">
+                <img src='<%= b.image_url %>' alt="<%= b.title %>">
+                <h1><%= b.title %> </h1>
+                <h2><%= b.author %></h2>
+                <div class="submit-btn"> <a href="/books/<%= b.id %>" class="btn">View details</a></div>
+            </div>
+            <% }); %>
+        </section>
+        <% }  %>
     </section>
 </main>
 

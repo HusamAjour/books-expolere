@@ -1,15 +1,25 @@
 body {
-    min-height: 100vh;;
 }
 main{
     max-width: 600px;
     margin: auto;
     padding: 35px 2em;
+    min-height: 80vh;
+}
+header{
+    position: fixed;
+    width: 100%;
+    top: 0;
 }
 header nav {
     padding: 25px 15px;
     display: flex;
     justify-content: space-between;
+}
+
+footer{
+    padding: 20px 20px;
+
 }
 .links-block {
     display: none;
