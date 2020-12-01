@@ -51,9 +51,8 @@ function searchHandler(req, res){
 }
 
 function storeIntoDB(req, res){
-  let index = req.body.array_index;
   let SQL = `INSERT INTO books(title, author, isbn, image_url, description) VALUES ($1,$2,$3,$4,$5) RETURNING id`;
-  let { title, author, isbn, image_url, description } = Book.all[index];
+  let { title, author, isbn, image_url, description } =  req.body;
   let values = [title, author, isbn, image_url, description];
   client.query(SQL, values)
     .then(result => {

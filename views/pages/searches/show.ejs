@@ -10,8 +10,14 @@
             <% let x = b.description.split(' ').slice(0,30); %>
             <p><%= x.join(' '); %>...</p>
             <form action="/books" method="post">
+                <input type='hidden' name="title" value="<%= b.title %>">
+                <input type='hidden' name="author" value="<%= b.author %>">
+                <input type='hidden' name="isbn" value="<%= b.isbn  %>">
+                <input type='hidden' name="image_url" value="<%= b.image_url %>">
+                <input type='hidden' name="description" value="<%= b.description %>">
+
                 <div class="submit-btn">
-                    <button class="btn" type="submit" name='array_index' value= "<%= i %>" >Select this Book</button>
+                    <button class="btn" type="submit" >Select this Book</button>
                 </div>
             </form>
         </div>
