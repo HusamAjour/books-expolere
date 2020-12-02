@@ -7,11 +7,18 @@
             <h2><%= obj.author %></h2>
             <p><%= obj.description %></p>
             <h2><%= obj.isbn %></h2>
-            <div class="submit-btn update-delete-btns">
-                <button class="btn" id="updateBtn">Update details</button>
-                <button class="btn">Delete book</button>
+            <div class="update-delete-btns">
+                <div class="submit-btn">
+                    <button class="btn" id="updateBtn">Update details</button>
+                </div>
+                <div>
+                    <form method="post" action="/books/<%= obj.id %>?_method=delete">
+                        <div class="submit-btn">
+                            <button class="btn">Delete book</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </div>
     </section>
     <%- include('edit') %>
     <div class="submit-btn">
