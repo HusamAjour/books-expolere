@@ -14,7 +14,7 @@ h1, h2, h3, h4, h5, h6{
 body{
     font-family: 'Lato', sans-serif;
 }
-p, a, label, input::placeholder, button, textarea{
+p, a, label, input::placeholder, button{
     font-size: 15px;
 }
 a{
