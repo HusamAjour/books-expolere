@@ -6,18 +6,21 @@ const pg = require('pg');
 require('dotenv').config();
 const PORT = process.env.PORT;
 const superagent = require('superagent');
-
+const methodOverride = require('method-override');
 const client = new pg.Client(process.env.DATABASE_URL);
 
 app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
 
 app.get('/', mainRoute);
 app.get('/search/new', searchFrom);
 app.post('/searches', searchHandler);
 app.post('/books', storeIntoDB);
 app.get('/books/:id', getBookFromDB);
+app.put('/books/:id', updateBookDetails);
+app.delete('/books/:id', deleteBook);
 app.get('*', notFound);
 app.use(errorHandler);
 
@@ -75,11 +78,33 @@ function getBookFromDB(req, res){
       errorHandler('pages/error', req, res);
     });
 }
+function updateBookDetails(req, res) {
+  let SQL = `UPDATE books SET title=$1, author=$2, isbn=$3, image_url=$4, description=$5 WHERE id=$6;`;
+  let { title, author, isbn, image_url, description } = req.body;
+  let values = [title, author, isbn, image_url, description, req.params.id];
 
-function notFound(req, res){
-  res.status(404).render('pages/error', {pageName: 'Not Found'});
+  client.query(SQL, values)
+    .then(() => {
+      res.redirect(`/books/${req.params.id}`);
+    })
+    .catch(() => {
+      errorHandler('pages/error', req, res);
+    });
 }
-
+function deleteBook(req, res) {
+  let SQL = `DELETE FROM books WHERE id=$1`;
+  let value = [req.params.id];
+  client.query(SQL, value)
+    .then(() => {
+      res.redirect(`/`);
+    })
+    .catch(() => {
+      errorHandler('pages/error', req, res);
+    });
+}
+function notFound(req, res) {
+  res.status(404).render('pages/error', { pageName: 'Not Found' });
+}
 function errorHandler(error, req, res) {
   res.status(500).render(error , {pageName: 'Error'});
 }
