@@ -6,39 +6,36 @@ const pg = require('pg');
 require('dotenv').config();
 const PORT = process.env.PORT;
 const superagent = require('superagent');
-const methodOverride = require('method-override');
+
 const client = new pg.Client(process.env.DATABASE_URL);
 
 app.set('view engine', 'ejs');
 app.use(express.static('./public'));
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
 
 app.get('/', mainRoute);
 app.get('/search/new', searchFrom);
 app.post('/searches', searchHandler);
 app.post('/books', storeIntoDB);
 app.get('/books/:id', getBookFromDB);
-app.put('/books/:id', updateBookDetails);
-app.delete('/books/:id', deleteBook);
 app.get('*', notFound);
 app.use(errorHandler);
 
-function mainRoute(req, res) {
+function mainRoute(req, res){
   const SQL = `SELECT * FROM books`;
   client.query(SQL)
     .then(results => {
-      res.render('pages/index', { books: results.rows, pageName: 'Home' });
+      res.render('pages/index', { books: results.rows, pageName: 'Home'});
     }).catch(() => {
       errorHandler('pages/error', req, res);
     });
 }
 
-function searchFrom(req, res) {
-  res.render('pages/searches/new', { pageName: 'Search by Title or Author' });
+function searchFrom(req, res){
+  res.render('pages/searches/new', {pageName: 'Search by Title or Author'});
 }
 
-function searchHandler(req, res) {
+function searchHandler(req, res){
   let search_query = req.body.search_query;
   let search_selection = req.body.search_selection;
   let url = `https://www.googleapis.com/books/v1/volumes?q=+${search_selection}:${search_query}`;
@@ -49,13 +46,13 @@ function searchHandler(req, res) {
       Book.all = result.body.items.map(b => {
         return new Book(b);
       });
-      res.render('pages/searches/show', { books: Book.all, pageName: 'Search Results' });
+      res.render('pages/searches/show', { books: Book.all, pageName: 'Search Results'});
     });
 }
 
-function storeIntoDB(req, res) {
+function storeIntoDB(req, res){
   let SQL = `INSERT INTO books(title, author, isbn, image_url, description) VALUES ($1,$2,$3,$4,$5) RETURNING id`;
-  let { title, author, isbn, image_url, description } = req.body;
+  let { title, author, isbn, image_url, description } =  req.body;
   let values = [title, author, isbn, image_url, description];
   client.query(SQL, values)
     .then(result => {
@@ -66,50 +63,26 @@ function storeIntoDB(req, res) {
     });
 }
 
-function getBookFromDB(req, res) {
+function getBookFromDB(req, res){
   let book_id = req.params.id;
   let SQL = `SELECT * FROM books WHERE id = ${book_id}`;
 
   client.query(SQL)
     .then(result => {
-      res.render('pages/books/show', { obj: result.rows[0], pageName: 'Book Details' });
+      res.render('pages/books/show', {obj: result.rows[0], pageName: 'Book Details'});
     })
     .catch(() => {
       errorHandler('pages/error', req, res);
     });
 }
-function updateBookDetails(req, res) {
-  let SQL = `UPDATE books SET title=$1, author=$2, isbn=$3, image_url=$4, description=$5 WHERE id=$6;`;
-  let { title, author, isbn, image_url, description } = req.body;
-  let values = [title, author, isbn, image_url, description, req.params.id];
 
-  client.query(SQL, values)
-    .then(() => {
-      res.redirect(`/books/${req.params.id}`);
-    })
-    .catch(() => {
-      errorHandler('pages/error', req, res);
-    });
-}
-function deleteBook(req, res) {
-  let SQL = `DELETE FROM books WHERE id=$1`;
-  let value = [req.params.id];
-  client.query(SQL, value)
-    .then(() => {
-      res.redirect(`/`);
-    })
-    .catch(() => {
-      errorHandler('pages/error', req, res);
-    });
-}
-function notFound(req, res) {
-  res.status(404).render('pages/error', { pageName: 'Not Found' });
+function notFound(req, res){
+  res.status(404).render('pages/error', {pageName: 'Not Found'});
 }
 
 function errorHandler(error, req, res) {
-  res.status(500).render(error, { pageName: 'Error' });
+  res.status(500).render(error , {pageName: 'Error'});
 }
-
 
 Book.all = [];
 function Book(data) {
